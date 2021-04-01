@@ -5,7 +5,6 @@ import { isPlatformBrowser } from '@angular/common';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -17,12 +16,12 @@ export class AppComponent {
   title = 'chaos';
 
   xValues = [];
-  xValue = 0.1;
-  rValue = 2;
-  stepValue = 0.05;
+  xValue = 0.4;
+  rValue = 2.8;
+  stepValue = 0.005;
 
   logisticMapValues = [];
-  logisticMapLimit = 500;
+  logisticMapLimit = 150;
 
   chart: any;
   interfaceColors = new am4core.InterfaceColorSet();
@@ -34,7 +33,7 @@ export class AppComponent {
 
   initChart(): void {
     this.chart = am4core.create('chartdiv', am4charts.XYChart);
-    am4core.useTheme(am4themes_animated);
+    // am4core.useTheme(am4themes_animated);
 
     am4core.options.autoSetClassName = true;
 
@@ -54,7 +53,7 @@ export class AppComponent {
     series.dataFields.categoryX = 't';
     series.dataFields.valueY = 'x';
     series.strokeWidth = 2;
-    series.stroke = am4core.color('red');
+    series.stroke = am4core.color('blue');
     series.tooltipText = '{valueY.value}';
 
     this.chart.scrollbarX = new am4core.Scrollbar();
@@ -83,15 +82,17 @@ export class AppComponent {
     while (i < this.logisticMapLimit ) {
       x = r * x * (1 - x);
       x = Math.ceil(x * 10000) / 10000;
+      if (x <= 0 ) {
+        x = 0;
+      }
       this.xValues.push(x);
       this.logisticMapValues.push({ x, r, t: i });
       i++;
     }
-    console.log(this.xValues);
   }
 
   // tslint:disable-next-line:use-lifecycle-interface
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     this.browserOnly(() => {
       this.initChart();
       this.render();
@@ -105,7 +106,7 @@ export class AppComponent {
   }
 
   stepXRun(): void {
-    this.xValue = this.xValue + 0.05;
+    this.xValue = this.xValue + this.stepValue;
     this.xValues = [this.xValue];
     this.logisticMapValues = [{x: this.xValue, r: this.rValue, t: 1 }];
     this.logisticMap();
@@ -113,11 +114,15 @@ export class AppComponent {
   }
 
   stepTRun(): void {
-    this.rValue = this.rValue + 0.05;
+    this.rValue = this.rValue + this.stepValue;
     this.xValues = [this.xValue];
     this.logisticMapValues = [{x: this.xValue, r: this.rValue, t: 1 }];
     this.logisticMap();
     this.renderChart();
+    // setTimeout(() => {
+    //   this.stepTRun();
+    // }, 500);
   }
+
 
 }

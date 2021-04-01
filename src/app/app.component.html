@@ -19,8 +19,8 @@
         <button class="btn btn-success" (click)="render()">Render</button>
       </div>
       <div class="col-7 d-flex justify-content-end">
-        <button class="btn btn-primary" (click)="stepXRun()">Step x by 0.05</button>
-        <button class="btn btn-danger mx-1" (click)="stepTRun()">Step t by 0.05</button>
+        <button class="btn btn-primary" (click)="stepXRun()">Step x by {{stepValue}}</button>
+        <button class="btn btn-danger mx-1" (click)="stepTRun()">Step t by {{stepValue}}</button>
       </div>
     </div>
     <div class="row mt-2">
@@ -30,5 +30,8 @@
     <div class="card-body">
       <div id="chartdiv" class="h50"></div>
     </div>
+  </div>
+  <div class="border p-2 mt-2 d-flex flex-wrap" *ngIf="logisticMapValues">
+    <span *ngFor="let logisticMapValue of logisticMapValues" class="me-1">{{logisticMapValue.x}}</span>
   </div>
 </div>

@@ -2,26 +2,46 @@
 <div class="p-3">
   <h2>Chaos</h2>
   <div class="mb-3">
+
     <div class="row">
       <div class="col-2">
-        <div class="input-group">
-          <span class="input-group-text">x</span>
-          <input type="number" class="form-control" min="0" max="1" step="0.001" [(ngModel)]="xValue">
+        <pre>x<sub>n+1</sub> = r.x<sub>n</sub>(1 - x<sub>n</sub>)</pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-3">
+        <div class="btn-group">
+          <button class="btn btn-danger" (click)="fixLogisticMapLimit(false)" style="width: 3rem;">-</button>
+          <button class="btn btn-dark" style="width: 11rem;">Sample set = {{logisticMapLimit}}</button>
+          <button class="btn btn-success" (click)="fixLogisticMapLimit(true)" style="width: 3rem;">+</button>
+          <button class="btn btn-secondary" (click)="resetLogisticMapLimit()" style="width: 5rem;">Reset</button>
         </div>
       </div>
-      <div class="col-2">
-        <div class="input-group">
-          <span class="input-group-text">r</span>
-          <input type="number" class="form-control" min="0" step="1" [(ngModel)]="rValue">
+
+      <div class="col-6">
+        <div class="btn-group">
+          <button class="btn btn-danger" (click)="step(false, false)" style="width: 3rem;">-</button>
+          <button class="btn btn-dark" style="width: 15rem;">Population ratio(<em>x<sub>n</sub></em>) =
+            {{xValue}}</button>
+          <button class="btn btn-success" (click)="step(false, true)" style="width: 3rem;">+</button>
+        </div>
+
+        <div class="btn-group ms-5">
+          <button class="btn btn-danger" (click)="step(true, false)" style="width: 3rem;">-</button>
+          <button class="btn btn-dark" style="width: 15rem;">Growth rate(<em>r</em>) = {{rValue}}</button>
+          <button class="btn btn-success" (click)="step(true, true)" style="width: 3rem;">+</button>
         </div>
       </div>
-      <div class="col-1">
-        <button class="btn btn-success" (click)="render()">Render</button>
+
+      <div class="col-3 d-flex justify-content-end align-items-start">
+        <div class="btn-group mx-5">
+          <button class="btn btn-success" (click)="startRun()" style="width: 6rem;">Start</button>
+          <button class="btn btn-secondary" (click)="stopRun()" style="width: 6rem;">Pause</button>
+        </div>
+        <button class="btn btn-dark ms-2" (click)="reset()" style="width: 5rem;">Reset</button>
       </div>
-      <div class="col-7 d-flex justify-content-end">
-        <button class="btn btn-primary" (click)="stepXRun()">Step x by {{stepValue}}</button>
-        <button class="btn btn-danger mx-1" (click)="stepTRun()">Step t by {{stepValue}}</button>
-      </div>
+
     </div>
     <div class="row mt-2">
     </div>
@@ -31,7 +51,10 @@
       <div id="chartdiv" class="h50"></div>
     </div>
   </div>
-  <div class="border p-2 mt-2 d-flex flex-wrap" *ngIf="logisticMapValues">
-    <span *ngFor="let logisticMapValue of logisticMapValues" class="me-1">{{logisticMapValue.x}}</span>
-  </div>
+  <!-- <div class="border p-2 mt-2 d-flex flex-wrap">
+    <span *ngFor="let xValue of xValues" class="me-1">{{roundValue(xValue, 1000)}}</span>
+  </div> -->
+  <!-- <div class="border p-2 mt-2 d-flex flex-wrap">
+    <span *ngFor="let rValue of repeatingXValues" class="me-1">{{rValue}}</span>
+  </div> -->
 </div>

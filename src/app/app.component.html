@@ -48,7 +48,9 @@
   </div>
   <div class="card">
     <div class="card-body">
-      <div id="chartdiv" class="h50"></div>
+      <!-- <div id="chartdiv" class="h50"></div> -->
+      <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+        [title]="chartOptions.title"></apx-chart>
     </div>
   </div>
   <!-- <div class="border p-2 mt-2 d-flex flex-wrap">
